@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { collection } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { getDocs } from "firebase/firestore";
-
-type Question = {
-    id: string;
-    question: string;
-    options: string[];
-    correctAnswer: number;
-};
+import { Question } from "../types";
 
 export const QuizApp = () => {
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -19,10 +13,10 @@ export const QuizApp = () => {
                 const quizRef = collection(db, "quizzes", "quizId1", "questions");
                 const snapshot = await getDocs(quizRef);
                 const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Question));
-                console.log("Fetched data:", data); // 디버깅용
+                console.log("Fetched data:", data);
                 setQuestions(data);
             } catch (error) {
-                console.error("Error fetching questions:", error); // 에러 출력
+                console.error("Error fetching questions:", error);
             }
         };
 
